@@ -12,11 +12,12 @@ public class AddUsers extends BaseClass
     {
         try
         {
-            System.out.println("Signing In to WebTables");
+            System.out.println("Navigation to WebTables");
             driver.navigate().to(APP_URL);
             String title = driver.getTitle();
             System.out.println("Page title: - " + title);
 
+            //Asserting if the navigation was successful
             Assert.assertEquals(title, "Protractor practice website - WebTables");
 
         }
@@ -36,47 +37,72 @@ public class AddUsers extends BaseClass
             while (usersToAdd.hasNext())
             {
 
-                User obj = (User) usersToAdd.next();
+                User userToBeAdded = (User) usersToAdd.next();
 
                 //Clicking the button to Add User
                 addUserButton(driver).click();
 
                 //Entering First Name
-                firstName(driver).sendKeys(obj.getFirstName());
+                firstName(driver).clear();
+                firstName(driver).sendKeys(userToBeAdded.getFirstName());
 
                 //Entering Last Name
-                lastName(driver).sendKeys(obj.getLastName());
+                lastName(driver).clear();
+                lastName(driver).sendKeys(userToBeAdded.getLastName());
 
 
                 //Entering UserName
-                String username = obj.getUsername() +""+ getUniqueNumber();
+                String username = userToBeAdded.getUsername() +""+ getUniqueNumber();
+                userName(driver).clear();
                 userName(driver).sendKeys(username);
 
                 //Entering password
-                password(driver).sendKeys(obj.getPassword());
+                password(driver).clear();
+                password(driver).sendKeys(userToBeAdded.getPassword());
 
-                customerSelectionCompanyAAA(driver).click();
+                //Selecting Customer Type
 
-                roleId(driver).sendKeys(obj.getRole());
+                if (userToBeAdded.getCustomerType().equals("Company AAA"))
+                {
+                    customerSelectionCompanyAAA(driver).click();
+                }
+                else
+                {
+                    customerSelectionCompanyBBB(driver).click();
 
-                email(driver).sendKeys(obj.getEmail());
+                }
 
-                mobilePhone(driver).sendKeys(obj.getCellphone());
+                //Selecting a Role
+                roleId(driver).sendKeys(userToBeAdded.getRole());
+
+                //Entering an email address
+                email(driver).clear();
+                email(driver).sendKeys(userToBeAdded.getEmail());
+
+                //Entering a Cell Phone Number
+                mobilePhone(driver).clear();
+                mobilePhone(driver).sendKeys(userToBeAdded.getCellphone());
+
+
                 Thread.sleep(2000);
+
+                //Submitting Customer information
                 saveButton(driver).click();
                 Thread.sleep(2000);
+
+                //Asserting if the User is added by checking the first entry on the table
                 Assert.assertEquals(username, driver.findElement(By.xpath("/html/body/table/tbody/tr[1]/td[3]")).getText());
 
-                System.out.println("This user "+obj.getFirstName()+" has been added");
+
+                //Logger for Customer Details that were added
+                System.out.println("This user "+userToBeAdded.getFirstName()+" has been added");
 
             }
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
-
+        
 
     }
 
