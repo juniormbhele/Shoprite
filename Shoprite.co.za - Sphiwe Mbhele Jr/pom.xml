@@ -23,6 +23,16 @@
             <artifactId>xcelite</artifactId>
             <version>1.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>2.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20170516</version>
+        </dependency>
     </dependencies>
 
 
